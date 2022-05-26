@@ -22,7 +22,7 @@ class Connection {
     Message pop_message();
 
     void send(Message& msg);
-    Message send_with_reply_and_block(Message& msg);
+    Message send_with_reply_and_block(Message& msg, const int timeout = -1);
 
     // ----- PROPERTIES -----
     std::string unique_name();

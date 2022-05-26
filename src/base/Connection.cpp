@@ -117,14 +117,14 @@ void Connection::send(Message& msg) {
     dbus_connection_flush(_conn);
 }
 
-Message Connection::send_with_reply_and_block(Message& msg) {
+Message Connection::send_with_reply_and_block(Message& msg, const int timeout) {
     if (!_initialized) {
         throw Exception::NotInitialized();
     }
 
     ::DBusError err;
     dbus_error_init(&err);
-    DBusMessage* msg_tmp = dbus_connection_send_with_reply_and_block(_conn, msg._msg, -1, &err);
+    DBusMessage* msg_tmp = dbus_connection_send_with_reply_and_block(_conn, msg._msg, timeout, &err);
 
     if (dbus_error_is_set(&err)) {
         std::string err_name = err.name;
