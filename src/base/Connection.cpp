@@ -113,7 +113,7 @@ void Connection::send(Message& msg) {
     }
 
     dbus_connection_send(_conn, msg._msg, NULL);
-    // dbus_connection_flush(_conn);
+    dbus_connection_flush(_conn);
 }
 
 Message Connection::send_with_reply_and_block(Message& msg, const int timeout) {
