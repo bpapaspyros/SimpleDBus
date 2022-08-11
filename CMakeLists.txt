@@ -25,6 +25,9 @@ else()
     set(STANDALONE false)
 endif()
 
+# include(FetchContent)
+# find_package(PkgConfig REQUIRED)
+# pkg_search_module(DBUS REQUIRED dbus-1)
 find_package(fmt REQUIRED)
 find_package(DBus1 REQUIRED)
 
@@ -36,7 +39,7 @@ endif()
 set(
     SIMPLEDBUS_ALL_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${DBUS_INCLUDE_DIRS}
+    ${DBus1_INCLUDE_DIRS}
 )
 
 # OUTPUTS
@@ -70,10 +73,6 @@ target_include_directories(simpledbus INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     ${DBus1_INCLUDE_DIRS})
 
-if(NOT ${STANDALONE})
-    set(SIMPLEDBUS_INCLUDES ${SIMPLEDBUS_ALL_INCLUDE_DIRS} PARENT_SCOPE)
-endif()
-
 # Append additional flags for address and thread sanitization
 if(SIMPLEDBUS_SANITIZE MATCHES "Address")
     message(STATUS "Appending address sanitization flags")
@@ -99,6 +98,10 @@ if(SIMPLEDBUS_COVERAGE MATCHES "On")
 
     target_compile_options(simpledbus PUBLIC ${COVERAGE_COMPILE_OPTIONS})
     target_link_libraries(simpledbus PUBLIC gcov)
+endif()
+
+if(NOT ${STANDALONE})
+    set(SIMPLEDBUS_INCLUDES ${SIMPLEDBUS_ALL_INCLUDE_DIRS} PARENT_SCOPE)
 endif()
 
 include(GNUInstallDirs)
