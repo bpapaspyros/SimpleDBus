@@ -3,7 +3,7 @@ SimpleDBus
 
 A simple C++ wrapper around DBus with a commercially-friendly licence.
 
-|Latest Documentation Status|
+|Latest Documentation Status| |Code Coverage|
 
 Overview
 --------
@@ -15,20 +15,14 @@ This library is designed to be an extremely minimalistic high-level
 wrapper around libdbus, with most of the focus placed on proper
 packing/unpacking of DBus data structures. It's primary intended
 use case is by `SimpleBluez`_, a project to provide easy access to
-the Bluez subsystem on Linux.
+the Bluez subsystem on Linux. SimpleDBus has also been designed to allow
+first-class support for vendorization of all 3rd-party dependencies.
 
 If you want to use SimpleDBus and need help. **Please do not hesitate to reach out!**
 
-* Visit our `ReadTheDocs`_ page. 
+* Visit our `ReadTheDocs`_ page.
 * Join our `Discord`_ server.
 * Contact me: ``kevin at dewald dot me``
-
-Vendorization
--------------
-If you are interested in using SimpleDBus as a dependency in your project,
-there is currently first-class support for vendorization of all 3rd-party
-dependencies. Please visit our **Security** page for more information on
-how to vendorize 3rd-party libraries for SimpleDBus.
 
 License
 -------
@@ -48,3 +42,6 @@ external creators, are licensed under the terms of the `MIT Licence`_.
 
 .. |Latest Documentation Status| image:: https://readthedocs.org/projects/simpledbus/badge?version=latest
    :target: http://simpledbus.readthedocs.org/en/latest
+
+.. |Code Coverage| image:: https://codecov.io/gh/OpenBluetoothToolbox/SimpleDBus/branch/master/graph/badge.svg?token=T0G4A78MAB
+   :target: https://codecov.io/gh/OpenBluetoothToolbox/SimpleDBus
