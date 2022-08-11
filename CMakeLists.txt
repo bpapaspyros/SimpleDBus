@@ -33,6 +33,12 @@ if(NOT SIMPLEDBUS_LOG_LEVEL)
     set(SIMPLEDBUS_LOG_LEVEL "FATAL")
 endif()
 
+set(
+    SIMPLEDBUS_ALL_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${DBUS_INCLUDE_DIRS}
+)
+
 # OUTPUTS
 message(STATUS "Configuring SimpleDBus")
 file(GLOB_RECURSE SRC_SIMPLEDBUS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -64,6 +70,10 @@ target_include_directories(simpledbus INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     ${DBus1_INCLUDE_DIRS})
 
+if(NOT ${STANDALONE})
+    set(SIMPLEDBUS_INCLUDES ${SIMPLEDBUS_ALL_INCLUDE_DIRS} PARENT_SCOPE)
+endif()
+
 # Append additional flags for address and thread sanitization
 if(SIMPLEDBUS_SANITIZE MATCHES "Address")
     message(STATUS "Appending address sanitization flags")
@@ -91,11 +101,10 @@ if(SIMPLEDBUS_COVERAGE MATCHES "On")
     target_link_libraries(simpledbus PUBLIC gcov)
 endif()
 
-
 include(GNUInstallDirs)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/simpledbus.pc.in
-            ${CMAKE_CURRENT_BINARY_DIR}/simpledbus.pc @ONLY)
+    ${CMAKE_CURRENT_BINARY_DIR}/simpledbus.pc @ONLY)
 
 install(
     TARGETS simpledbus
@@ -116,4 +125,3 @@ install(
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/simpledbus.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-
