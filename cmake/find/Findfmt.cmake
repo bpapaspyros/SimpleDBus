@@ -33,8 +33,4 @@ if (LIBFMT_VENDORIZE)
     # https://cmake.org/cmake/help/latest/manual/cmake-developer.7.html
     set(fmt_FOUND 1)
 
-else()
-
-    find_package(fmt CONFIG)
-
 endif()

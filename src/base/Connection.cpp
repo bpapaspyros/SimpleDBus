@@ -19,8 +19,6 @@ void Connection::init() {
         return;
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
     ::DBusError err;
     dbus_error_init(&err);
 
@@ -40,8 +38,6 @@ void Connection::uninit() {
         return;
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
     // In order to prevent a crash on any third party environment
     // we need to flush the connection queue.
     SimpleDBus::Message message;
@@ -60,11 +56,8 @@ void Connection::add_match(std::string rule) {
         throw Exception::NotInitialized();
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
     ::DBusError err;
     dbus_error_init(&err);
-
     dbus_bus_add_match(_conn, rule.c_str(), &err);
     dbus_connection_flush(_conn);
     if (dbus_error_is_set(&err)) {
@@ -80,11 +73,8 @@ void Connection::remove_match(std::string rule) {
         throw Exception::NotInitialized();
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
     ::DBusError err;
     dbus_error_init(&err);
-
     dbus_bus_remove_match(_conn, rule.c_str(), &err);
     dbus_connection_flush(_conn);
     if (dbus_error_is_set(&err)) {
@@ -100,8 +90,6 @@ void Connection::read_write() {
         throw Exception::NotInitialized();
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
     // Non blocking read of the next available message
     dbus_connection_read_write(_conn, 0);
 }
@@ -110,8 +98,6 @@ Message Connection::pop_message() {
     if (!_initialized) {
         throw Exception::NotInitialized();
     }
-
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
 
     DBusMessage* msg = dbus_connection_pop_message(_conn);
     if (msg == nullptr) {
@@ -126,10 +112,7 @@ void Connection::send(Message& msg) {
         throw Exception::NotInitialized();
     }
 
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
-    uint32_t msg_serial = 0;
-    dbus_connection_send(_conn, msg._msg, &msg_serial);
+    dbus_connection_send(_conn, msg._msg, NULL);
     dbus_connection_flush(_conn);
 }
 
@@ -137,8 +120,6 @@ Message Connection::send_with_reply_and_block(Message& msg, const int timeout) {
     if (!_initialized) {
         throw Exception::NotInitialized();
     }
-
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
 
     ::DBusError err;
     dbus_error_init(&err);
@@ -158,8 +139,6 @@ std::string Connection::unique_name() {
     if (!_initialized) {
         throw Exception::NotInitialized();
     }
-
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
 
     return std::string(dbus_bus_get_unique_name(_conn));
 }

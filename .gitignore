@@ -1,6 +1,5 @@
 bin
 build
-build_examples
 build_test
 .build
 .vscode

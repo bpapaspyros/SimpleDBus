@@ -2,7 +2,6 @@
 
 #include <dbus/dbus.h>
 #include "Message.h"
-#include <mutex>
 
 namespace SimpleDBus {
 
@@ -33,8 +32,6 @@ class Connection {
 
     ::DBusBusType _dbus_bus_type;
     ::DBusConnection* _conn;
-
-    std::recursive_mutex _mutex;
 };
 
 }  // namespace SimpleDBus
